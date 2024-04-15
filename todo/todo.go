@@ -11,7 +11,7 @@ import (
 	"github.com/beto20/cli/colors"
 )
 
-type item struct {
+type Item struct {
 	Task        string
 	Description string
 	Done        bool
@@ -24,10 +24,14 @@ type ItemTemp struct {
 	Description string
 }
 
-type Todos []item
+type Todos []Item
+
+func Plus(x, y int) int {
+	return x + y
+}
 
 func (t *Todos) Addv2(temp ItemTemp) {
-	todo := item{
+	todo := Item{
 		Task:        temp.Title,
 		Description: temp.Description,
 		Done:        false,
@@ -39,7 +43,7 @@ func (t *Todos) Addv2(temp ItemTemp) {
 }
 
 func (t *Todos) Add(task string) {
-	todo := item{
+	todo := Item{
 		Task:        task,
 		Description: "description",
 		Done:        false,
