@@ -1,6 +1,7 @@
 package todo
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 	"time"
@@ -47,6 +48,125 @@ func TestAddV2_thenOk(t *testing.T) {
 	if res != expected {
 		t.Errorf("res %v expected %v", res, expected)
 	}
+}
+
+func TestComplete_thenOk(t *testing.T) {
+
+	i := Item{
+		Task:        "",
+		Description: "",
+		Done:        false,
+		CreatedAt:   time.Now(),
+		CompletedAt: time.Now(),
+	}
+
+	to := Todos{i}
+
+	to.Complete(1)
+	expected := i.Done
+
+	if expected != false {
+		t.Errorf("res %v expected %v", false, expected)
+	}
+}
+
+func TestComplete_thenError(t *testing.T) {
+	i := Item{
+		Task:        "",
+		Description: "",
+		Done:        false,
+		CreatedAt:   time.Now(),
+		CompletedAt: time.Now(),
+	}
+
+	to := Todos{i}
+
+	res := to.Complete(-1)
+	expected := errors.New("invalid index")
+
+	if i.Done != false {
+		t.Errorf("res %v expected %v", false, i.Done)
+	}
+
+	if res.Error() != expected.Error() {
+		t.Errorf("res '%v' expected '%v'", res, expected)
+	}
+}
+
+func TestDelete_thenOk(t *testing.T) {
+	i := Item{
+		Task:        "",
+		Description: "",
+		Done:        false,
+		CreatedAt:   time.Now(),
+		CompletedAt: time.Now(),
+	}
+
+	to := Todos{i}
+
+	to.Delete(1)
+	expected := len(to)
+
+	if expected != 0 {
+		t.Errorf("res %v expected %v", 1, expected)
+	}
+}
+
+func TestDelete_thenError(t *testing.T) {
+	i := Item{
+		Task:        "",
+		Description: "",
+		Done:        false,
+		CreatedAt:   time.Now(),
+		CompletedAt: time.Now(),
+	}
+
+	to := Todos{i}
+
+	res := to.Delete(-1)
+	expected := errors.New("invalid index")
+
+	if res.Error() != expected.Error() {
+		t.Errorf("res '%v' expected '%v'", res, expected)
+	}
+}
+
+func TestStore_thenOk(t *testing.T) {
+	i := Item{
+		Task:        "",
+		Description: "",
+		Done:        false,
+		CreatedAt:   time.Now(),
+		CompletedAt: time.Now(),
+	}
+
+	to := Todos{i}
+
+	res := to.Store("mock_filename")
+
+	println(res)
+	// expected := ""
+
+	// if condition {
+		
+	// }
+}
+
+func TestStore_thenError(t *testing.T) {
+	i := Item{
+		Task:        "",
+		Description: "",
+		Done:        false,
+		CreatedAt:   time.Now(),
+		CompletedAt: time.Now(),
+	}
+
+	to := Todos{i}
+	// x := append(to[:0], to[0+1])
+
+	res := x.Store("mock_error_filename")
+
+	println(res)
 }
 
 func TestCountPending_thenPending(t *testing.T) {
