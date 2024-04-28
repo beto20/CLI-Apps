@@ -1,7 +1,9 @@
 package main
 
-import cmd "github.com/beto20/CLI-Wheather/weather"
+import "github.com/beto20/CLI-Wheather/weather/command"
 
 func main() {
-	cmd.Init()
+
+	// x := "../data/command.json"
+	command.Init()
 }
