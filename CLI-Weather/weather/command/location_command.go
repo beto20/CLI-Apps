@@ -12,6 +12,7 @@ type LocationCommand struct {
 type LocationInterface interface {
 	GetLocationsCommand(arg string)
 }
+
 func NewLocation() LocationInterface {
 	return &LocationCommand{}
 }
