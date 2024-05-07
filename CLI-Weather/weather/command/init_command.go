@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/alexeyco/simpletable"
 	"github.com/beto20/CLI-Wheather/weather/util"
 )
 
@@ -23,8 +24,10 @@ func chooseCommand(flag string, arg string) {
 	case flag == "-h":
 		showCommands()
 	case flag == "-v":
-		fmt.Println(flag, arg)
-	case flag == "-w":
+		showVersion()
+  case flag == "-e":
+    showExamples()
+  case flag == "-w":
 		NewWeather().GetWeatherCommand(arg)
 	case flag == "-f":
 		NewForecast().GetForecastCommand(arg)
@@ -51,7 +54,38 @@ func showExamples() {
 		arr = append(arr, com)
 	}
 
-	fmt.Println(arr)
+  table := simpletable.New()
+  table.Header = &simpletable.Header{
+    Cells: []*simpletable.Cell{
+      { Align: simpletable.AlignCenter, Text: "mock1" },
+      { Align: simpletable.AlignCenter, Text: "mock2" },
+      { Align: simpletable.AlignCenter, Text: "mock3" },
+      { Align: simpletable.AlignCenter, Text: "mock4" },
+      { Align: simpletable.AlignCenter, Text: "mock5" },
+      { Align: simpletable.AlignCenter, Text: "mock6" },
+    },
+  }
+
+  var cells [][]*simpletable.Cell 
+
+  for i := 0; i < 6; i++ {
+    content := []*simpletable.Cell{
+      {Text: "a"},
+      {Text: "b"},
+      {Text: "c"},
+      {Text: "d"},
+      {Text: "e"},
+      {Text: "f"},
+    }
+
+    cells = append(cells, content)
+  }
+
+  table.Body = &simpletable.Body{Cells: cells}
+
+  table.SetStyle(simpletable.StyleCompact)
+  table.Print()
+
 }
 
 func showCommands() {
@@ -119,4 +153,8 @@ func Init() {
 			chooseCommand(f, a)
 		}
 	}
+}
+
+func showVersion() {
+  fmt.Print("current version: ", util.VERSION)
 }

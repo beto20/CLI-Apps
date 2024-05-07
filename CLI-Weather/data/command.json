@@ -43,5 +43,14 @@
         "quantityArgs": 1,
         "description": "Get the forecast information",
         "example": "-l lima"
+    },
+    {
+      "name": "show examples",
+      "full": "-example",
+      "short": "-e",
+      "requireArgs": false,
+      "quantityArgs": 0,
+      "description": "Show commands in/out examples",
+      "example": "-e"
     }
 ]
