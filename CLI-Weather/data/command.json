@@ -6,7 +6,7 @@
         "requireArgs": false,
         "quantityArgs": 1,
         "description":"Get commands help information",
-        "example": "-h"
+        "example": "ie: -h"
     },
     {
         "name": "version",
@@ -14,43 +14,34 @@
         "short": "-v",
         "requireArgs": false,
         "quantityArgs": 0,
-        "description":"Get commands hel",
-        "example": "-v"
+        "description":"Show current version",
+        "example": "ie: -v"
     },
     {
         "name": "weather",
-        "full": "-weather",
+        "full": "-w <arg>",
         "short": "-w",
         "requireArgs": true,
         "quantityArgs": 1,
-        "description": "Get the weather",
-        "example": "-w lima"
+        "description": "Get current weather in a location",
+        "example": "ie: -w London"
     },
     {
         "name": "forecast",
-        "full": "-forecast",
+        "full": "-f <arg>",
         "short": "-f",
         "requireArgs": true,
         "quantityArgs": 1,
-        "description": "Get the forecast information",
-        "example": "-f lima"
+        "description": "Get next three days forecast in a location",
+        "example": "ie: -f London"
     },
     {
-        "name": "search location coincidence",
-        "full": "-location",
+        "name": "search",
+        "full": "-l <arg>",
         "short": "-l",
         "requireArgs": true,
         "quantityArgs": 1,
-        "description": "Get the forecast information",
-        "example": "-l lima"
-    },
-    {
-      "name": "show examples",
-      "full": "-example",
-      "short": "-e",
-      "requireArgs": false,
-      "quantityArgs": 0,
-      "description": "Show commands in/out examples",
-      "example": "-e"
+        "description": "Search location coincidence",
+        "example": "ie: -l London"
     }
 ]

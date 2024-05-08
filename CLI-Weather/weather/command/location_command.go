@@ -1,6 +1,8 @@
 package command
 
 import (
+	"fmt"
+
 	"github.com/beto20/CLI-Wheather/weather/service"
 )
 
@@ -23,7 +25,10 @@ func (lc *LocationCommand) GetLocationsCommand(arg string) {
 
 	var arr []LocationCommand
 
-	for _, l := range locations {
+  fmt.Print(locations[0].Name)
+
+
+  for _, l := range locations {
 		x := LocationCommand{
 			Name:    l.Name,
 			Country: l.Country,

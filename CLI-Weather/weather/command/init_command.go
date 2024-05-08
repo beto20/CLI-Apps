@@ -22,11 +22,9 @@ type command struct {
 func chooseCommand(flag string, arg string) {
 	switch {
 	case flag == "-h":
-		showCommands()
+		showHelp()
 	case flag == "-v":
 		showVersion()
-  case flag == "-e":
-    showExamples()
   case flag == "-w":
 		NewWeather().GetWeatherCommand(arg)
 	case flag == "-f":
@@ -34,11 +32,11 @@ func chooseCommand(flag string, arg string) {
 	case flag == "-l":
 		NewLocation().GetLocationsCommand(arg)
 	default:
-		fmt.Println("help def")
+		showHelp()
 	}
 }
 
-func showExamples() {
+func showHelp() {
 	commands := readCommandsJson()
 
 	var com command
@@ -57,25 +55,19 @@ func showExamples() {
   table := simpletable.New()
   table.Header = &simpletable.Header{
     Cells: []*simpletable.Cell{
-      { Align: simpletable.AlignCenter, Text: "mock1" },
-      { Align: simpletable.AlignCenter, Text: "mock2" },
-      { Align: simpletable.AlignCenter, Text: "mock3" },
-      { Align: simpletable.AlignCenter, Text: "mock4" },
-      { Align: simpletable.AlignCenter, Text: "mock5" },
-      { Align: simpletable.AlignCenter, Text: "mock6" },
+      { Align: simpletable.AlignCenter, Text: "Weather -flag" },
+      { Align: simpletable.AlignCenter, Text: "Description" },
+      { Align: simpletable.AlignCenter, Text: "Example" }, 
     },
   }
 
   var cells [][]*simpletable.Cell 
 
-  for i := 0; i < 6; i++ {
+  for _, v := range commands {
     content := []*simpletable.Cell{
-      {Text: "a"},
-      {Text: "b"},
-      {Text: "c"},
-      {Text: "d"},
-      {Text: "e"},
-      {Text: "f"},
+      {Text: v.Short},
+      {Text: v.Description},
+      {Text: v.Example},
     }
 
     cells = append(cells, content)
@@ -83,32 +75,8 @@ func showExamples() {
 
   table.Body = &simpletable.Body{Cells: cells}
 
-  table.SetStyle(simpletable.StyleCompact)
+  table.SetStyle(simpletable.StyleRounded)
   table.Print()
-
-}
-
-func showCommands() {
-	commands := readCommandsJson()
-	var com command
-	var arr []command
-
-	for _, c := range commands {
-		com = command{
-			Name:         c.Name,
-			Full:         c.Full,
-			Short:        c.Short,
-			RequireArgs:  c.RequireArgs,
-			QuantityArgs: c.QuantityArgs,
-			Description:  c.Description,
-			Example:      c.Example,
-		}
-		arr = append(arr, com)
-	}
-
-	fmt.Printf(
-		"Name: %v Full: %v \nShort: %v \nRequire args: %v \nDescription: %v", arr[0].Name, arr[0].Full, arr[0].Short, arr[0].RequireArgs, arr[0].Description,
-	)
 }
 
 func readCommandsJson() []command {
