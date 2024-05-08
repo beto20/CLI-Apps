@@ -30,8 +30,8 @@ func chooseCommand(flag string, arg string) {
 	case flag == "-f":
 		NewForecast().GetForecastCommand(arg)
 	case flag == "-l":
-		NewLocation().GetLocationsCommand(arg)
-	default:
+    showLocation(arg)
+  default:
 		showHelp()
 	}
 }
@@ -76,6 +76,41 @@ func showHelp() {
   table.Body = &simpletable.Body{Cells: cells}
 
   table.SetStyle(simpletable.StyleRounded)
+  table.Print()
+}
+
+func showWeather() {
+
+}
+
+func showForecast() {
+
+}
+
+func showLocation(arg string) {
+  locations := NewLocation().GetLocationsCommand(arg)
+
+  table := simpletable.New()
+
+  table.Header = &simpletable.Header{
+    Cells: []*simpletable.Cell{
+      {Align: simpletable.AlignCenter, Text: "Locations"},
+    },
+  }
+
+  var cells [][]*simpletable.Cell
+
+  for _, v := range locations {
+    content := []*simpletable.Cell{
+      {Text: v.Name + " - " + v.Country},
+    }
+
+    cells = append(cells, content)
+  }
+
+  table.Body = &simpletable.Body{Cells: cells}
+
+  table.SetStyle(simpletable.StyleCompact)
   table.Print()
 }
 

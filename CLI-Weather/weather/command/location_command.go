@@ -1,8 +1,6 @@
 package command
 
 import (
-	"fmt"
-
 	"github.com/beto20/CLI-Wheather/weather/service"
 )
 
@@ -12,21 +10,18 @@ type LocationCommand struct {
 }
 
 type LocationInterface interface {
-	GetLocationsCommand(arg string)
+	GetLocationsCommand(arg string) []LocationCommand
 }
 
 func NewLocation() LocationInterface {
 	return &LocationCommand{}
 }
 
-func (lc *LocationCommand) GetLocationsCommand(arg string) {
+func (lc *LocationCommand) GetLocationsCommand(arg string) []LocationCommand {
 	nl := service.NewLocation()
 	locations := nl.GetLocationsCoincidence(arg)
 
 	var arr []LocationCommand
-
-  fmt.Print(locations[0].Name)
-
 
   for _, l := range locations {
 		x := LocationCommand{
@@ -37,7 +32,6 @@ func (lc *LocationCommand) GetLocationsCommand(arg string) {
 		arr = append(arr, x)
 	}
 
-	for _, l := range arr {
-		println(l.Name, l.Country)
-	}
+  return arr
 }
+
