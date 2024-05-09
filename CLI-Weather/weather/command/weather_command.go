@@ -13,8 +13,6 @@ type WeatherCommand struct {
 	WindSpeed   float64
 	Humidity    float64
 	Cloud       float64
-	Sunrise     string
-	Sunset      string
 }
 
 type WeatherInterface interface {
@@ -36,9 +34,9 @@ func (wc *WeatherCommand) GetWeatherCommand(arg string) {
 		WindSpeed:   w.Current.WindSpeed,
 		Humidity:    w.Current.Humidity,
 		Cloud:       w.Current.Cloud,
-		// Sunrise:     w.Forecast.Forecastday[0].Astro.Sunrise,
-		// Sunset:      w.Forecast.Forecastday[0].Astro.Sunset,
 	}
 
 	fmt.Print(wcs.Name, wcs.Cloud, wcs.Humidity)
+
+	return wcs
 }

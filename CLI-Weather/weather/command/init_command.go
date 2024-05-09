@@ -25,13 +25,13 @@ func chooseCommand(flag string, arg string) {
 		showHelp()
 	case flag == "-v":
 		showVersion()
-  case flag == "-w":
-		NewWeather().GetWeatherCommand(arg)
+	case flag == "-w":
+		showWeather(arg)
 	case flag == "-f":
-		NewForecast().GetForecastCommand(arg)
+		showForecast(arg)
 	case flag == "-l":
-    showLocation(arg)
-  default:
+		showLocation(arg)
+	default:
 		showHelp()
 	}
 }
@@ -52,66 +52,112 @@ func showHelp() {
 		arr = append(arr, com)
 	}
 
-  table := simpletable.New()
-  table.Header = &simpletable.Header{
-    Cells: []*simpletable.Cell{
-      { Align: simpletable.AlignCenter, Text: "Weather -flag" },
-      { Align: simpletable.AlignCenter, Text: "Description" },
-      { Align: simpletable.AlignCenter, Text: "Example" }, 
-    },
-  }
+	table := simpletable.New()
+	table.Header = &simpletable.Header{
+		Cells: []*simpletable.Cell{
+			{Align: simpletable.AlignCenter, Text: "Weather -flag"},
+			{Align: simpletable.AlignCenter, Text: "Description"},
+			{Align: simpletable.AlignCenter, Text: "Example"},
+		},
+	}
 
-  var cells [][]*simpletable.Cell 
+	var cells [][]*simpletable.Cell
 
-  for _, v := range commands {
-    content := []*simpletable.Cell{
-      {Text: v.Short},
-      {Text: v.Description},
-      {Text: v.Example},
-    }
+	for _, v := range commands {
+		content := []*simpletable.Cell{
+			{Text: v.Short},
+			{Text: v.Description},
+			{Text: v.Example},
+		}
 
-    cells = append(cells, content)
-  }
+		cells = append(cells, content)
+	}
 
-  table.Body = &simpletable.Body{Cells: cells}
+	table.Body = &simpletable.Body{Cells: cells}
 
-  table.SetStyle(simpletable.StyleRounded)
-  table.Print()
+	table.SetStyle(simpletable.StyleRounded)
+	table.Print()
 }
 
-func showWeather() {
+func showWeather(arg string) {
+	weather := NewWeather().GetWeatherCommand(arg)
 
+	table := simpletable.New()
+
+	table.Header = &simpletable.Header{
+		Cells: []*simpletable.Cell{
+			{Align: simpletable.AlignCenter, Text: "Locations"},
+		},
+	}
+
+	var cells [][]*simpletable.Cell
+
+	for _, v := range forecast.details {
+		content := []*simpletable.Cell{
+			{Text: weather.Name + " - " + weather.Country},
+		}
+
+		cells = append(cells, content)
+	}
+
+	table.Body = &simpletable.Body{Cells: cells}
+
+	table.SetStyle(simpletable.StyleCompact)
+	table.Print()
 }
 
-func showForecast() {
+func showForecast(arg string) {
+	forecast := NewForecast().GetForecastCommand(arg)
 
+	table := simpletable.New()
+
+	table.Header = &simpletable.Header{
+		Cells: []*simpletable.Cell{
+			{Align: simpletable.AlignCenter, Text: "Locations"},
+		},
+	}
+
+	var cells [][]*simpletable.Cell
+
+	for _, v := range forecast.details {
+		content := []*simpletable.Cell{
+			{Text: v.MinTempCelsius + " - " + v.MaxTempCelsius},
+		}
+
+		cells = append(cells, content)
+	}
+
+	table.Body = &simpletable.Body{Cells: cells}
+
+	table.SetStyle(simpletable.StyleCompact)
+	table.Print()
 }
 
 func showLocation(arg string) {
-  locations := NewLocation().GetLocationsCommand(arg)
+	locations := NewLocation().GetLocationsCommand(arg)
 
-  table := simpletable.New()
+	table := simpletable.New()
 
-  table.Header = &simpletable.Header{
-    Cells: []*simpletable.Cell{
-      {Align: simpletable.AlignCenter, Text: "Locations"},
-    },
-  }
+	table.Header = &simpletable.Header{
+		Cells: []*simpletable.Cell{
+			{Align: simpletable.AlignCenter, Text: "Locations"},
+		},
+	}
 
-  var cells [][]*simpletable.Cell
+	var cells [][]*simpletable.Cell
 
-  for _, v := range locations {
-    content := []*simpletable.Cell{
-      {Text: v.Name + " - " + v.Country},
-    }
+	for _, v := range locations {
+		content := []*simpletable.Cell{
+			{Text: v.Name + " - " + v.Country},
+		}
 
-    cells = append(cells, content)
-  }
+		cells = append(cells, content)
+	}
 
-  table.Body = &simpletable.Body{Cells: cells}
+	table.Body = &simpletable.Body{Cells: cells}
 
-  table.SetStyle(simpletable.StyleCompact)
-  table.Print()
+	table.SetStyle(simpletable.StyleCompact)
+	table.Print()
 }
 
 func readCommandsJson() []command {
@@ -159,5 +205,5 @@ func Init() {
 }
 
 func showVersion() {
-  fmt.Print("current version: ", util.VERSION)
+	fmt.Print("current version: ", util.VERSION)
 }

@@ -84,4 +84,6 @@ func (fc *ForecastCommand) GetForecastCommand(arg string) {
 	fmt.Println("5: ", y.ForecastDetails[0].Sunset)
 	fmt.Println("5: ", y.ForecastDetails[1].Sunset)
 	fmt.Println("5: ", y.ForecastDetails[2].Sunset)
+
+	return y
 }

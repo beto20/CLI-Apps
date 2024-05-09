@@ -23,7 +23,7 @@ func (lc *LocationCommand) GetLocationsCommand(arg string) []LocationCommand {
 
 	var arr []LocationCommand
 
-  for _, l := range locations {
+	for _, l := range locations {
 		x := LocationCommand{
 			Name:    l.Name,
 			Country: l.Country,
@@ -32,6 +32,5 @@ func (lc *LocationCommand) GetLocationsCommand(arg string) []LocationCommand {
 		arr = append(arr, x)
 	}
 
-  return arr
+	return arr
 }
-
