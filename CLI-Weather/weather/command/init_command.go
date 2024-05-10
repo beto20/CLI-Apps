@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/alexeyco/simpletable"
 	"github.com/beto20/CLI-Wheather/weather/util"
@@ -39,19 +40,6 @@ func chooseCommand(flag string, arg string) {
 func showHelp() {
 	commands := readCommandsJson()
 
-	var com command
-	var arr []command
-
-	for _, c := range commands {
-		com = command{
-			Name:    c.Name,
-			Full:    c.Full,
-			Short:   c.Short,
-			Example: c.Example,
-		}
-		arr = append(arr, com)
-	}
-
 	table := simpletable.New()
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
@@ -76,7 +64,7 @@ func showHelp() {
 	table.Body = &simpletable.Body{Cells: cells}
 
 	table.SetStyle(simpletable.StyleRounded)
-	table.Print()
+	table.Println()
 }
 
 func showWeather(arg string) {
@@ -86,24 +74,25 @@ func showWeather(arg string) {
 
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
-			{Align: simpletable.AlignCenter, Text: "Locations"},
+			{Align: simpletable.AlignCenter, Text: "Weather"},
 		},
 	}
 
 	var cells [][]*simpletable.Cell
 
-	for _, v := range forecast.details {
-		content := []*simpletable.Cell{
-			{Text: weather.Name + " - " + weather.Country},
-		}
+  temp := strconv.FormatFloat(weather.TempCelsius, 'f', 2, 64)
 
-		cells = append(cells, content)
+	content := []*simpletable.Cell{
+		{Text: weather.Name + " - " + temp},
 	}
+
+	cells = append(cells, content)
+
 
 	table.Body = &simpletable.Body{Cells: cells}
 
 	table.SetStyle(simpletable.StyleCompact)
-	table.Print()
+	table.Println()
 }
 
 func showForecast(arg string) {
@@ -113,15 +102,17 @@ func showForecast(arg string) {
 
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
-			{Align: simpletable.AlignCenter, Text: "Locations"},
+			{Align: simpletable.AlignCenter, Text: "Forecast"},
 		},
 	}
 
 	var cells [][]*simpletable.Cell
 
-	for _, v := range forecast.details {
+	for _, v := range forecast.ForecastDetails {
+    min := strconv.FormatFloat(v.MinTempCelsius, 'f', 2, 64)
+    max := strconv.FormatFloat(v.MaxTempCelsius, 'f', 2, 64)
 		content := []*simpletable.Cell{
-			{Text: v.MinTempCelsius + " - " + v.MaxTempCelsius},
+			{ Text: min + " - " + max },
 		}
 
 		cells = append(cells, content)
@@ -130,7 +121,7 @@ func showForecast(arg string) {
 	table.Body = &simpletable.Body{Cells: cells}
 
 	table.SetStyle(simpletable.StyleCompact)
-	table.Print()
+	table.Println()
 }
 
 func showLocation(arg string) {
@@ -157,7 +148,7 @@ func showLocation(arg string) {
 	table.Body = &simpletable.Body{Cells: cells}
 
 	table.SetStyle(simpletable.StyleCompact)
-	table.Print()
+	table.Println()
 }
 
 func readCommandsJson() []command {
@@ -183,11 +174,13 @@ func Init() {
 	var f string
 	var a string
 	commands := readCommandsJson()
+  defMssg := "Invalid flag, use -h to show available flags"
+  // notFound := false
 
 	input := os.Args[0:]
 
-	if len(input) == 1 {
-		fmt.Println("help")
+  if len(input) == 1 {
+		fmt.Println(defMssg)
 	}
 	if len(input) == 2 {
 		f = input[1]
@@ -200,10 +193,16 @@ func Init() {
 	for _, c := range commands {
 		if f == c.Short {
 			chooseCommand(f, a)
+      break
 		}
+    // notFound = true
 	}
+
+  // if notFound && f != "" {
+  //   fmt.Println(defMssg)
+  // }
 }
 
 func showVersion() {
-	fmt.Print("current version: ", util.VERSION)
+	fmt.Println("current version:", util.VERSION)
 }

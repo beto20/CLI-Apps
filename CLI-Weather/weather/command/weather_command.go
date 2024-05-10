@@ -1,8 +1,6 @@
 package command
 
 import (
-	"fmt"
-
 	"github.com/beto20/CLI-Wheather/weather/service"
 )
 
@@ -16,14 +14,14 @@ type WeatherCommand struct {
 }
 
 type WeatherInterface interface {
-	GetWeatherCommand(arg string)
+	GetWeatherCommand(arg string) WeatherCommand
 }
 
 func NewWeather() WeatherInterface {
 	return &WeatherCommand{}
 }
 
-func (wc *WeatherCommand) GetWeatherCommand(arg string) {
+func (wc *WeatherCommand) GetWeatherCommand(arg string) WeatherCommand {
 	nw := service.NewWeather()
 	w := nw.GetCurrentWeather(arg)
 
@@ -36,7 +34,6 @@ func (wc *WeatherCommand) GetWeatherCommand(arg string) {
 		Cloud:       w.Current.Cloud,
 	}
 
-	fmt.Print(wcs.Name, wcs.Cloud, wcs.Humidity)
-
 	return wcs
 }
+

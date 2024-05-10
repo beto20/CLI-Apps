@@ -1,8 +1,6 @@
 package command
 
 import (
-	"fmt"
-
 	"github.com/beto20/CLI-Wheather/weather/service"
 )
 
@@ -21,14 +19,14 @@ type ForecastCommand struct {
 }
 
 type ForecastInterface interface {
-	GetForecastCommand(arg string)
+	GetForecastCommand(arg string) ForecastCommand
 }
 
 func NewForecast() ForecastInterface {
 	return &ForecastCommand{}
 }
 
-func (fc *ForecastCommand) GetForecastCommand(arg string) {
+func (fc *ForecastCommand) GetForecastCommand(arg string) ForecastCommand {
 	nw := service.NewWeather()
 	forecasts := nw.GetForecast(arg)
 
@@ -70,20 +68,6 @@ func (fc *ForecastCommand) GetForecastCommand(arg string) {
 		ForecastDetails: fcDetails,
 	}
 
-	fmt.Println("0: ", y.Name)
-	fmt.Println("0: ", y.Country)
-
-	fmt.Println("1a: ", y.ForecastDetails[0].Date)
-	fmt.Println("1b: ", y.ForecastDetails[1].Date)
-	fmt.Println("1c: ", y.ForecastDetails[2].Date)
-
-	fmt.Println("2: ", y.ForecastDetails[1].MaxTempCelsius)
-	fmt.Println("3: ", y.ForecastDetails[1].MinTempCelsius)
-	fmt.Println("4: ", y.ForecastDetails[1].Sunrise)
-
-	fmt.Println("5: ", y.ForecastDetails[0].Sunset)
-	fmt.Println("5: ", y.ForecastDetails[1].Sunset)
-	fmt.Println("5: ", y.ForecastDetails[2].Sunset)
-
-	return y
+  return y
 }
+
