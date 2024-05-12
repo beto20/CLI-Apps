@@ -1,7 +1,6 @@
 package command
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
@@ -38,7 +37,7 @@ func chooseCommand(flag string, arg string) {
 }
 
 func showHelp() {
-	commands := readCommandsJson()
+	commands := initCommands()
 
 	table := simpletable.New()
 	table.Header = &simpletable.Header{
@@ -53,9 +52,9 @@ func showHelp() {
 
 	for _, v := range commands {
 		content := []*simpletable.Cell{
-			{Text: v.Short},
-			{Text: v.Description},
-			{Text: v.Example},
+			{Text: v.fullFlag},
+			{Text: v.description},
+			{Text: v.example},
 		}
 
 		cells = append(cells, content)
@@ -151,29 +150,78 @@ func showLocation(arg string) {
 	table.Println()
 }
 
-func readCommandsJson() []command {
-	// fmt.Print(os.Getwd())
-	file, err := os.Open(util.COMMANDS_FILE)
+// func readCommandsJson() []command {
+// 	// fmt.Print(os.Getwd())
+// 	file, err := os.Open(util.COMMANDS_FILE)
 
-	if err != nil {
-		fmt.Println("Error open:", err)
-	}
-	defer file.Close()
+// 	if err != nil {
+// 		fmt.Println("Error open:", err)
+// 	}
+// 	defer file.Close()
 
-	var command []command
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&command)
-	if err != nil {
-		fmt.Println("Name: ")
-	}
+// 	var command []command
+// 	decoder := json.NewDecoder(file)
+// 	err = decoder.Decode(&command)
+// 	if err != nil {
+// 		fmt.Println("Name: ")
+// 	}
 
-	return command
+// 	return command
+// }
+
+
+type commandData struct {
+  flag string
+  fullFlag string
+  description string
+  example string
+}
+
+func initCommands() []commandData {
+  var commands []commandData
+
+  help := commandData{
+    flag: "-h",
+    fullFlag: "-h",
+    description: "Get commands help information",
+    example: "ie: -h",
+  }
+
+  version := commandData{
+    flag: "-v",
+    fullFlag: "-v",
+    description: "Show current version",
+    example: "ie: -v",
+  }
+
+  weather := commandData{
+    flag: "-w",
+    fullFlag: "-w <arg>",
+    description: "Get current weather in a location",
+    example: "ie: -w london",
+  }
+
+  forecast := commandData{
+    flag: "-f",
+    fullFlag: "-f <arg>",
+    description: "Get next three days forecast in a location",
+    example: "ie: -f london",
+  }
+
+  locations := commandData{
+    flag: "-l",
+    fullFlag: "-l <arg>",
+    description: "Search location coincidence",
+    example: "ie: -l london",
+  }
+
+  return append(commands, help, version, weather, forecast, locations)
 }
 
 func Init() {
 	var f string
 	var a string
-	commands := readCommandsJson()
+	commands := initCommands()
   defMssg := "Invalid flag, use -h to show available flags"
   // notFound := false
 
@@ -191,7 +239,7 @@ func Init() {
 	}
 
 	for _, c := range commands {
-		if f == c.Short {
+		if f == c.flag {
 			chooseCommand(f, a)
       break
 		}
@@ -206,3 +254,4 @@ func Init() {
 func showVersion() {
 	fmt.Println("current version:", util.VERSION)
 }
+

@@ -1,7 +1,7 @@
 [
     {
         "name": "help",
-        "full": "-help",
+        "full": "-h",
         "short": "-h",
         "requireArgs": false,
         "quantityArgs": 1,
@@ -10,7 +10,7 @@
     },
     {
         "name": "version",
-        "full": "-version",
+        "full": "-v",
         "short": "-v",
         "requireArgs": false,
         "quantityArgs": 0,
